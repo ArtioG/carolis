@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para você 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  background: #fff5f9;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  opacity: 0;
+  animation: fadeIn 1.0s forwards ease-in-out;
+}
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  max-width: 480px;
+  text-align: center;
+}
+h1 { font-family: 'Pacifico', cursive; font-size: 2rem; color: #ff7aa8; }
+p { margin-top: 10px; font-size: 1.05rem; color: #444; line-height: 1.5; }
+button { margin-top: 20px; background: #ff7aa8; border: none; padding: 12px 20px; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; }
+#cat-area { margin-top: 30px; font-size: 2.5rem; }
+#talking-cat { margin-top: 25px; font-size: 3rem; cursor: pointer; }
+#cat-message { margin-top: 8px; font-size: 0.95rem; color: #555; min-height: 24px; }
+@keyframes danceCat { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(10deg) scale(1.1); } 100% { transform: rotate(-10deg) scale(1.05); } }
+#talking-cat.dancing { animation: danceCat 0.9s infinite ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes floatArc { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 50% { transform: translate(-20px, -80px) scale(1.3); opacity: 0.9; } 100% { transform: translate(-60px, -160px) scale(0.6); opacity: 0; } }
+.floating-love { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; color: rgba(255, 100, 150, 0.12); font-family: 'Pacifico', cursive; pointer-events: none; animation: floatLove 6s ease-in-out infinite alternate; white-space: nowrap; }
+@keyframes floatLove { 0% { transform: translate(-50%, -50%) scale(1); } 100% { transform: translate(-48%, -55%) scale(1.15); } }
+.fallback-play { background:#ffd1e6;color:#5a1133;border:none;padding:10px 14px;border-radius:10px;font-weight:700; }
+.small-muted { font-size:0.9rem;color:#777;margin-top:8px }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Oi meu amor 💗</h1>
+  <p>Te amo meu amor, não importa se o momento for triste e feliz eu sempre vou estar com você. Espero que isso faça seu dia mais feliz.</p>
+
+  <button id="catBtn">Clique aqui 🤍</button>
+
+  <div id="cat-area"></div>
+
+  <div id="talking-cat">🐾🐱</div>
+  <p id="cat-message"></p>
+
+  <div style="margin-top:14px">
+    <button id="startMusic" class="fallback-play">▶️ Ouvir uma música pra você</button>
+    <div class="small-muted">Toque no botão se a música não iniciar automaticamente.</div>
+  </div>
+
+</div>
+<div class="floating-love">Eu te amo</div>
+
+<script>
+function showCat() {
+  for (let i = 0; i < 12; i++) {
+    const cat = document.createElement('div');
+    cat.textContent = '🐱';
+    cat.style.position = 'fixed';
+    cat.style.fontSize = (16 + Math.random() * 32) + 'px';
+    cat.style.left = (window.innerWidth * 0.2 + Math.random() * window.innerWidth * 0.6) + 'px';
+    cat.style.top = (window.innerHeight * 0.3 + Math.random() * window.innerHeight * 0.4) + 'px';
+    cat.style.pointerEvents = 'none';
+    cat.style.opacity = '1';
+    cat.style.transformOrigin = 'center';
+    cat.style.animation = 'floatArc 1.2s ease forwards';
+    document.body.appendChild(cat);
+    setTimeout(() => cat.remove(), 1400);
+  }
+}
+
+const messages = [
+  "Você é a coisa mais linda do meu dia. 😺",
+  "Se eu pudesse ronronar, eu faria isso no seu colo agora. 💗",
+  "Você merece todo carinho do mundo. 🐾",
+  "Seu sorriso ilumina tudo aqui. ✨",
+  "Eu gosto muito de você, viu? 😽"
+];
+
+const talkingCat = document.getElementById('talking-cat');
+const catMessage = document.getElementById('cat-message');
+const catBtn = document.getElementById('catBtn');
+const startMusic = document.getElementById('startMusic');
+
+if (talkingCat) {
+  talkingCat.addEventListener('click', () => {
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    catMessage.textContent = msg;
+  });
+}
+
+if (catBtn) {
+  catBtn.addEventListener('click', () => {
+    if (talkingCat) {
+      talkingCat.style.transform = 'scale(1.15)';
+      setTimeout(() => talkingCat.style.transform = 'scale(1)', 250);
+    }
+    showCat();
+  });
+}
+
+const bgm = document.createElement('audio');
+bgm.src = "musica.mp3";
+bgm.loop = true;
+bgm.setAttribute('playsinline', '');
+bgm.style.display = 'none';
+document.body.appendChild(bgm);
+
+let musicStarted = false;
+
+function startMusicPlay() {
+  if(!musicStarted){
+    bgm.play().catch(()=>{});
+    musicStarted = true;
+    startMusic.textContent = '⏸️ Pausar música';
+    if (talkingCat) talkingCat.classList.add('dancing');
+  }
+}
+
+window.addEventListener('touchstart', startMusicPlay, { once: true });
+window.addEventListener('click', startMusicPlay, { once: true });
+
+startMusic.addEventListener('click', () => {
+  if (bgm.paused) {
+    bgm.play().catch(()=>{});
+    startMusic.textContent = '⏸️ Pausar música';
+    if (talkingCat) talkingCat.classList.add('dancing');
+  } else {
+    bgm.pause();
+    startMusic.textContent = '▶️ Ouvir uma música pra você';
+    if (talkingCat) talkingCat.classList.remove('dancing');
+  }
+});
+
+if (talkingCat) {
+  talkingCat.setAttribute('role', 'button');
+  talkingCat.setAttribute('tabindex', '0');
+  talkingCat.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      talkingCat.click();
+    }
+  });
+}
+</script>
+
+</body>
+</html>
